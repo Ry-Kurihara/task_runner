@@ -1,4 +1,7 @@
+set shell := ["docker", "run", "--rm", "scripts_pyenv:latest", "python3", "-c"]
+
 @build_python:
+  #!/bin/sh
   dir=$(dirname $(realpath {{ source_file() }})) && \
   cd $dir && \
   hash_file=dockerfile.hash && \
@@ -18,4 +21,11 @@
   fi
 
 exec_python: build_python
+  #!/bin/sh
   docker run -v $(pwd):/app --rm scripts_pyenv:latest python --version
+
+exec_py_direct: build_python
+  import requests; \
+  url = "http://google.com"; \
+  response = requests.get(url); \
+  print(response.text);

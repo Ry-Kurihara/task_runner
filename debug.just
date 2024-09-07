@@ -22,7 +22,9 @@ set shell := ["docker", "run", "--rm", "scripts_pyenv:latest", "python3", "-c"]
 
 exec_python: build_python
   #!/bin/sh
-  docker run -v $(pwd):/app --rm scripts_pyenv:latest python --version
+  dir=$(dirname $(realpath {{ source_file() }})) && \
+  echo "Just Projcet Directory: $dir" && \
+  docker run -v $dir:/app --rm scripts_pyenv:latest python /app/simple_requests.py
 
 exec_py_direct: build_python
   import requests; \
